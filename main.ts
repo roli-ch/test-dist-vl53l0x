@@ -13,7 +13,7 @@ basic.forever(function on_forever() {
     //dist = VL53L0X.readSingleDistance()
     //distStr = VL53L0X.stringDistance()
     dist = Rangefinder.distance()
-    if (dist < 8000) {
+    if (dist < 2000) {
         serial.writeLine("-------")
         serial.writeValue("time ", input.runningTime() / 1000)
         serial.writeValue("distanz", dist)
