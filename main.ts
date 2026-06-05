@@ -1,3 +1,4 @@
+
 /**
 * VL53L0X block
 */
@@ -68,6 +69,7 @@ namespace VL53L0X {
      * VL53L0X Initialize
      */
     //% blockId="VL53L0X_INITIALIZE" block="init vl53l0x"
+    
     export function init(): void {
         let r1 = readReg(0xc0)
         let r2 = readReg(0xc1)
@@ -338,6 +340,7 @@ namespace VL53L0X {
      * Read Distance
      */
     //% blockId="VL53L0X_DISTANCE" block="distance"
+    
     export function readSingleDistance(): number {
         let timeout = 0
         if (!started) {
@@ -379,22 +382,27 @@ namespace VL53L0X {
     }
 }
 
-//Rangefinder.init()
+Rangefinder.init()
 VL53L0X.init
 let pin1 = 0
 let dist = 1
 let distStr = "xx"
+pause(1000)
 console.log("init")
 
 basic.forever(function on_forever() {
-    dist = VL53L0X.readSingleDistance()
-    distStr = VL53L0X.stringDistance()
-    //dist = Rangefinder.distance()
-    serial.writeLine("-------")
-    serial.writeValue("distanz", dist)
-    serial.writeLine(distStr)
-    //serial.writeString("" + "\r\n")
-    pin1 = pins.digitalReadPin(DigitalPin.P1)
-    serial.writeValue("pin1", pin1)
-    pause(100)
+    //dist = VL53L0X.readSingleDistance()
+    //distStr = VL53L0X.stringDistance()
+    dist = Rangefinder.distance()
+    if (dist < 8000) {
+        serial.writeLine("-------")
+        serial.writeValue("time ", input.runningTime() / 1000)
+        serial.writeValue("distanz", dist)
+        serial.writeLine(distStr)
+        //serial.writeString("" + "\r\n")
+        pin1 = pins.digitalReadPin(DigitalPin.P1)
+        serial.writeValue("pin1", pin1)
+    }
+    
+    pause(1)
 })
